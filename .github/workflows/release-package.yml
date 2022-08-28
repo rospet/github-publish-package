@@ -4,13 +4,18 @@ on:
   release:
     types: [created]
 
-uses: mr-smithers-excellent/docker-build-push@v5
-with:
-  image: rospet/foobar
-  tags: 0.2
-  registry: ghcr.io
-  username: rospet
-  password: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        name: Build and Push to registry
+        with:
+          image: rospet/foobar
+          tags: 0.2
+          registry: ghcr.io
+          username: rospet
+          password: ${{ secrets.GITHUB_TOKEN }}
 
 
 #jobs:
