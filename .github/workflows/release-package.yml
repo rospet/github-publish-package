@@ -1,0 +1,27 @@
+# build and release a package - push to GH package registry
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/docker@v1
+        with:
+          docker-version: 20.10.12
+      - run: docker build -t rospet/foobar:0.2 .
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/docker@v1
+        with:
+          registry-url: https:/ghcr.io
+      - run: docker tag -t rospet/foobar:0.2 ghcr.io/rospet/foobar:0.2
+      - run: docker push ghcr.io/rospet/foobar:0.2
+        env:
+          AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
