@@ -4,38 +4,38 @@ on:
   release:
     types: [created]
 
+#jobs:
+#  build-and-push:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: mr-smithers-excellent/docker-build-push@v5
+#        name: Build and Push to registry
+#        with:
+#          image: rospet/foobar
+#          tags: 0.2
+#          registry: ghcr.io
+#          username: rospet
+#          password: ${{ secrets.GITHUB_TOKEN }}
+
+
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: mr-smithers-excellent/docker-build-push@v5
-        name: Build and Push to registry
+      - uses: actions/checkout@v2
+      - uses: actions/docker@v1
         with:
-          image: rospet/foobar
-          tags: 0.2
-          registry: ghcr.io
-          username: rospet
-          password: ${{ secrets.GITHUB_TOKEN }}
+          docker-version: 20.10.12
+      - run: docker build -t rospet/foobar:0.2 sample-packages/docker/
 
-
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/docker@v1
-#        with:
-#          docker-version: 20.10.12
-#      - run: docker build -t rospet/foobar:0.2 .
-#
-#  publish-gpr:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/docker@v1
-#        with:
-#          registry-url: https:/ghcr.io
-#      - run: docker tag -t rospet/foobar:0.2 ghcr.io/rospet/foobar:0.2
-#      - run: docker push ghcr.io/rospet/foobar:0.2
-#        env:
-#          AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/docker@v1
+        with:
+          registry-url: https:/ghcr.io
+      - run: docker tag -t rospet/foobar:0.2 ghcr.io/rospet/foobar:0.2
+      - run: docker push ghcr.io/rospet/foobar:0.2
+        env:
+          AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
