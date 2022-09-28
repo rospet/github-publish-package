@@ -12,7 +12,7 @@ on:
 #        name: Build and Push to registry
 #        with:
 #          image: rospet/foobar
-#          tags: 0.2
+#          tags: 0.3
 #          registry: ghcr.io
 #          username: rospet
 #          password: ${{ secrets.GITHUB_TOKEN }}
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/docker@v1
         with:
           docker-version: 20.10.12
-      - run: docker build -t rospet/foobar:0.2 sample-packages/docker/
+      - run: docker build -t rospet/foobar:0.3 sample-packages/docker/
 
   publish-gpr:
     needs: build
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/docker@v1
         with:
           registry-url: https:/ghcr.io
-      - run: docker tag -t rospet/foobar:0.2 ghcr.io/rospet/foobar:0.2
-      - run: docker push ghcr.io/rospet/foobar:0.2
+      - run: docker tag -t rospet/foobar:0.3 ghcr.io/rospet/foobar:0.3
+      - run: docker push ghcr.io/rospet/foobar:0.3
         env:
           AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
