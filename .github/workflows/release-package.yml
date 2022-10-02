@@ -23,5 +23,5 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/rospet/foobar:0.9
-            ghcr.io/rospet/foobar:latest
+            ghcr.io/rospet/github-publish-package:0.13
+            ghcr.io/rospet/github-publish-package:latest
