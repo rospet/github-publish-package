@@ -7,7 +7,7 @@ on:
     types: [created]
 
 jobs:
-  login:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub Container Registry
@@ -16,8 +16,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ghcr.io/rospet/foobar:0.9
+          tags: |
+            ghcr.io/rospet/foobar:0.9
+            ghcr.io/rospet/foobar:latest
